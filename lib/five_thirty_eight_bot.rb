@@ -37,10 +37,6 @@ Forecast Model Update
 END
   end
 
-  def parsed_page
-    Nokogiri::HTML(page_source)
-  end
-
   def page_source
     @ps ||= HTTParty.get('https://projects.fivethirtyeight.com/2016-election-forecast/')
   end
