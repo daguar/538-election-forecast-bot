@@ -16,12 +16,14 @@ class FiveThirtyEightBot
   end
 
   def tweet_if_new_forecast
-    if current_forecast != last_tweet
-      twitter_client.update(current_forecast)
-    end
+    twitter_client.update(current_forecast) unless last_tweet_contains_current_forecast?
   end
 
   private
+
+  def last_tweet_contains_current_forecast?
+    last_tweet.include?(polls_only_string) and last_tweet.include?(polls_plus_string) and last_tweet.include?(now_cast_string)
+  end
 
   def last_tweet
     twitter_client.home_timeline.first.text

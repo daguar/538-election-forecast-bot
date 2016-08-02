@@ -49,5 +49,21 @@ END
         expect(fake_twitter).to_not have_received(:update)
       end
     end
+
+    context 'when the latest tweet has the current forecast but has somewhat different words' do
+      let(:last_tweet) do
+<<END
+NEW WORDING HERE
+(Hillary vs. Donald)
+Polls-plus: 60.9% to 39.1%
+Polls-only: 51.0% to 49.0%
+Now-cast: 56.8% to 43.2%
+END
+      end
+
+      it 'does not tweet' do
+        expect(fake_twitter).to_not have_received(:update)
+      end
+    end
   end
 end
