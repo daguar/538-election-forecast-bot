@@ -22,11 +22,14 @@ class FiveThirtyEightBot
   private
 
   def last_tweet_contains_current_forecast?
-    last_tweet.include?(polls_only_string) and last_tweet.include?(polls_plus_string) and last_tweet.include?(now_cast_string)
+    last_tweet_with_a_forecast.include?(polls_only_string) and last_tweet_with_a_forecast.include?(polls_plus_string) and last_tweet_with_a_forecast.include?(now_cast_string)
   end
 
-  def last_tweet
-    twitter_client.home_timeline.first.text
+  def last_tweet_with_a_forecast
+    tweets = twitter_client.home_timeline
+    tweets.each do |tweet|
+      return tweet.text unless tweet.text[0] == '@'
+    end
   end
 
   def current_forecast
