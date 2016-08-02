@@ -3,7 +3,7 @@ require 'five_thirty_eight_bot'
 RSpec.describe FiveThirtyEightBot do
   describe '#tweet_if_new_forecast' do
     let(:bot) { FiveThirtyEightBot.new }
-    let(:fake_twitter) { double(Twitter::REST::Client, home_timeline: fake_timeline, update: true) }
+    let(:fake_twitter) { double(Twitter::REST::Client, user_timeline: fake_timeline, update: true) }
     let(:fake_timeline) { [double(Twitter::Tweet, text: last_tweet)] }
 
     before do

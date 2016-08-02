@@ -26,7 +26,7 @@ class FiveThirtyEightBot
   end
 
   def last_tweet_with_a_forecast
-    tweets = twitter_client.home_timeline
+    tweets = twitter_client.user_timeline
     tweets.each do |tweet|
       return tweet.text unless tweet.text[0] == '@'
     end
