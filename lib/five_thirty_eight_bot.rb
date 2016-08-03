@@ -22,7 +22,7 @@ class FiveThirtyEightBot
   private
 
   def last_tweet_contains_current_forecast?
-    last_tweet_with_a_forecast.include?(polls_only_string) and last_tweet_with_a_forecast.include?(polls_plus_string) and last_tweet_with_a_forecast.include?(now_cast_string)
+    last_tweet_with_a_forecast.include?(hillary_polls_only) and last_tweet_with_a_forecast.include?(donald_polls_only) and last_tweet_with_a_forecast.include?(hillary_polls_plus) and last_tweet_with_a_forecast.include?(donald_polls_plus) and last_tweet_with_a_forecast.include?(hillary_polls_now) and last_tweet_with_a_forecast.include?(donald_polls_now)
   end
 
   def last_tweet_with_a_forecast
@@ -42,16 +42,40 @@ Forecast Model Update
 END
   end
 
-  def polls_plus_string
-    "Polls-plus: #{forecast_for("plus","D")}% to #{forecast_for("plus","R")}%"
+  def hillary_polls_only
+    forecast_for("polls", "D").to_s
+  end
+
+  def donald_polls_only
+    forecast_for("polls", "R").to_s
   end
 
   def polls_only_string
-    "Polls-only: #{forecast_for("polls", "D")}% to #{forecast_for("polls", "R")}%"
+    "Polls-only: #{hillary_polls_only}% to #{donald_polls_only}%"
+  end
+
+  def hillary_polls_plus
+    forecast_for("plus", "D").to_s
+  end
+
+  def donald_polls_plus
+    forecast_for("plus", "R").to_s
+  end
+
+  def polls_plus_string
+    "Polls-plus: #{hillary_polls_plus}% to #{donald_polls_plus}%"
+  end
+
+  def hillary_polls_now
+    forecast_for("now", "D").to_s
+  end
+
+  def donald_polls_now
+    forecast_for("now", "R").to_s
   end
 
   def now_cast_string
-    "Now-cast: #{forecast_for("now", "D")}% to #{forecast_for("now", "R")}%"
+    "Now-cast: #{hillary_polls_now}% to #{donald_polls_now}%"
   end
 
   def forecast_for(model, party)

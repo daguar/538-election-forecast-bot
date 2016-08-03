@@ -66,6 +66,23 @@ END
       end
     end
 
+    context 'when the latest tweet has the current forecast NUMBERS but has it differently formated' do
+      let(:last_tweet) do
+<<END
+Forecast Model Update
+(Hillary vs. Donald)
+Polls-plus: 60.9%-39.1%
+Polls-only: 51.0%-49.0%
+Now-cast: 56.8%-43.2%
+https://projects.fivethirtyeight.com/2016-election-forecast/
+END
+      end
+
+      it 'does not tweet' do
+        expect(fake_twitter).to_not have_received(:update)
+      end
+    end
+
     context 'when the latest tweet is an @-mention and the one before that is the most recent forecast' do
       let(:fake_timeline) do
         [
