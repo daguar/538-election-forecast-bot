@@ -39,6 +39,7 @@ Forecast Model Update
 #{polls_plus_string}
 #{polls_only_string}
 #{now_cast_string}
+https://projects.fivethirtyeight.com/2016-election-forecast/
 END
   end
 
@@ -51,7 +52,7 @@ END
   end
 
   def polls_only_string
-    "Polls-only: #{hillary_polls_only}% to #{donald_polls_only}%"
+    "Polls-only: #{hillary_polls_only}%-#{donald_polls_only}%"
   end
 
   def hillary_polls_plus
@@ -63,7 +64,7 @@ END
   end
 
   def polls_plus_string
-    "Polls-plus: #{hillary_polls_plus}% to #{donald_polls_plus}%"
+    "Polls-plus: #{hillary_polls_plus}%-#{donald_polls_plus}%"
   end
 
   def hillary_polls_now
@@ -75,7 +76,7 @@ END
   end
 
   def now_cast_string
-    "Now-cast: #{hillary_polls_now}% to #{donald_polls_now}%"
+    "Now-cast: #{hillary_polls_now}%-#{donald_polls_now}%"
   end
 
   def forecast_for(model, party)

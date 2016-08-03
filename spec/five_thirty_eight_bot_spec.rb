@@ -26,9 +26,10 @@ RSpec.describe FiveThirtyEightBot do
         status = <<END
 Forecast Model Update
 (Hillary vs. Donald)
-Polls-plus: 60.9% to 39.1%
-Polls-only: 51.0% to 49.0%
-Now-cast: 56.8% to 43.2%
+Polls-plus: 60.9%-39.1%
+Polls-only: 51.0%-49.0%
+Now-cast: 56.8%-43.2%
+https://projects.fivethirtyeight.com/2016-election-forecast/
 END
         expect(fake_twitter).to have_received(:update).with(status)
       end
