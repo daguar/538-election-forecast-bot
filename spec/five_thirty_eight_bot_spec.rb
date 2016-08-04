@@ -26,9 +26,9 @@ RSpec.describe FiveThirtyEightBot do
         status = <<END
 Forecast Model Update
 (Hillary vs. Donald)
-Polls-plus: 60.9%-39.1%
-Polls-only: 51.0%-49.0%
-Now-cast: 56.8%-43.2%
+Polls-plus: 74.4%-25.6%
+Polls-only: 79.9%-20.1%
+Now-cast: 91.5%-8.5%
 https://projects.fivethirtyeight.com/2016-election-forecast/
 END
         expect(fake_twitter).to have_received(:update).with(status)
@@ -40,9 +40,9 @@ END
 <<END
 Forecast Model Update
 (Hillary vs. Donald)
-Polls-plus: 60.9% to 39.1%
-Polls-only: 51.0% to 49.0%
-Now-cast: 56.8% to 43.2%
+Polls-plus: 74.4%-25.6%
+Polls-only: 79.9%-20.1%
+Now-cast: 91.5%-8.5%
 END
       end
 
@@ -56,9 +56,9 @@ END
 <<END
 NEW WORDING HERE
 (Hillary vs. Donald)
-Polls-plus: 60.9% to 39.1%
-Polls-only: 51.0% to 49.0%
-Now-cast: 56.8% to 43.2%
+Polls-plus: 74.4%-25.6%
+Polls-only: 79.9%-20.1%
+Now-cast: 91.5%-8.5%
 END
       end
 
@@ -72,9 +72,9 @@ END
 <<END
 Forecast Model Update
 (Hillary vs. Donald)
-Polls-plus: 60.9%-39.1%
-Polls-only: 51.0%-49.0%
-Now-cast: 56.8%-43.2%
+Polls-plus: 74.4%-25.6%
+Polls-only: 79.9%-20.1%
+Now-cast: 91.5%-8.5%
 https://projects.fivethirtyeight.com/2016-election-forecast/
 END
       end
@@ -91,9 +91,9 @@ END
           double(Twitter::Tweet, text: <<END
 NEW WORDING HERE
 (Hillary vs. Donald)
-Polls-plus: 60.9% to 39.1%
-Polls-only: 51.0% to 49.0%
-Now-cast: 56.8% to 43.2%
+Polls-plus: 74.4%-25.6%
+Polls-only: 79.9%-20.1%
+Now-cast: 91.5%-8.5%
 END
                 )
         ]

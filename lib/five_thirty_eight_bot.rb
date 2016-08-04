@@ -88,7 +88,7 @@ END
   end
 
   def data_hash
-    extracted_json = page_source.body.match(/race\.stateData = (.+)\;/).captures.first
+    extracted_json = page_source.body.match(/race\.stateData = ([^;]+);/).captures.first
     parsed_json = JSON.parse(extracted_json)
     @dh ||= parsed_json["forecasts"]["latest"]
   end
