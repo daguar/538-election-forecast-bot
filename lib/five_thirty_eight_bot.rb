@@ -16,20 +16,26 @@ class FiveThirtyEightBot
   end
 
   def tweet_if_new_forecast
-    twitter_client.update(current_forecast) unless last_tweet_contains_current_forecast?
+    twitter_client.update(current_forecast) unless last_forecast_tweet_is_current?
   end
 
   private
 
-  def last_tweet_contains_current_forecast?
+  def last_forecast_tweet_is_current?
     last_tweet_with_a_forecast.include?(hillary_polls_only) and last_tweet_with_a_forecast.include?(donald_polls_only) and last_tweet_with_a_forecast.include?(hillary_polls_plus) and last_tweet_with_a_forecast.include?(donald_polls_plus) and last_tweet_with_a_forecast.include?(hillary_polls_now) and last_tweet_with_a_forecast.include?(donald_polls_now)
   end
 
   def last_tweet_with_a_forecast
     tweets = twitter_client.user_timeline
     tweets.each do |tweet|
-      return tweet.text unless tweet.text[0] == '@'
+      return tweet.text if is_forecast?(tweet.text)
     end
+  end
+
+  def is_forecast?(text)
+    text.include?("Polls-plus:") and
+      text.include?("Polls-only:") and
+      text.include?("Now-cast:")
   end
 
   def current_forecast
