@@ -2,6 +2,7 @@ require 'httparty'
 require 'twitter'
 require 'nokogiri'
 require 'json'
+require File.expand_path('../forecast', __FILE__)
 
 class FiveThirtyEightBot
   attr_reader :twitter_client
@@ -16,7 +17,7 @@ class FiveThirtyEightBot
   end
 
   def tweet_if_new_forecast
-    twitter_client.update(current_forecast) unless last_forecast_tweet_is_current?
+    twitter_client.update(forecast_update) unless last_forecast_tweet_is_current?
   end
 
   def is_forecast?(text)
@@ -28,7 +29,7 @@ class FiveThirtyEightBot
   private
 
   def last_forecast_tweet_is_current?
-    last_tweet_with_a_forecast.include?(hillary_polls_only) and last_tweet_with_a_forecast.include?(donald_polls_only) and last_tweet_with_a_forecast.include?(hillary_polls_plus) and last_tweet_with_a_forecast.include?(donald_polls_plus) and last_tweet_with_a_forecast.include?(hillary_polls_now) and last_tweet_with_a_forecast.include?(donald_polls_now)
+    last_tweet_with_a_forecast.include?(hillary_polls_only.to_s) and last_tweet_with_a_forecast.include?(donald_polls_only.to_s) and last_tweet_with_a_forecast.include?(hillary_polls_plus.to_s) and last_tweet_with_a_forecast.include?(donald_polls_plus.to_s) and last_tweet_with_a_forecast.include?(hillary_polls_now.to_s) and last_tweet_with_a_forecast.include?(donald_polls_now.to_s)
   end
 
   def last_tweet_with_a_forecast
@@ -38,19 +39,34 @@ class FiveThirtyEightBot
     end
   end
 
-  def current_forecast
+  def forecast_update
+    previous_forecast = Forecast.from_tweet(last_tweet_with_a_forecast)
+
+    plus_delta = format_delta(hillary_polls_plus - previous_forecast.hillary_polls_plus)
+    only_delta = format_delta(hillary_polls_only - previous_forecast.hillary_polls_only)
+    now_delta = format_delta(hillary_polls_now - previous_forecast.hillary_polls_now)
+
     <<END
-Forecast Model Update
-(Hillary vs. Donald)
-#{polls_plus_string}
-#{polls_only_string}
-#{now_cast_string}
+Update! Clinton v Trump
+Polls-plus #{plus_delta}% (#{hillary_polls_plus}%-#{donald_polls_plus}%)
+Polls-only #{only_delta}% (#{hillary_polls_only}%-#{donald_polls_only}%)
+Now-cast #{now_delta}% (#{hillary_polls_now}%-#{donald_polls_now}%)
 https://projects.fivethirtyeight.com/2016-election-forecast/
 END
   end
 
+  def format_delta(delta_number)
+    if delta_number > 0
+      "↑ #{delta_number}"
+    elsif delta_number < 0
+      "↓ #{delta_number * -1}"
+    else
+      "#{delta_number}"
+    end
+  end
+
   def hillary_polls_only
-    forecast_for("polls", "D").to_s
+    forecast_for("polls", "D")
   end
 
   def donald_polls_only
@@ -62,7 +78,7 @@ END
   end
 
   def hillary_polls_plus
-    forecast_for("plus", "D").to_s
+    forecast_for("plus", "D")
   end
 
   def donald_polls_plus
@@ -74,7 +90,7 @@ END
   end
 
   def hillary_polls_now
-    forecast_for("now", "D").to_s
+    forecast_for("now", "D")
   end
 
   def donald_polls_now
