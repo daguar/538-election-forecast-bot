@@ -10,10 +10,6 @@ class SiteScrape
     forecast_for("polls", "R")
   end
 
-  def polls_only_string
-    "Polls-only: #{hillary_polls_only}%-#{donald_polls_only}%"
-  end
-
   def hillary_polls_plus
     forecast_for("plus", "D")
   end
@@ -22,20 +18,12 @@ class SiteScrape
     forecast_for("plus", "R")
   end
 
-  def polls_plus_string
-    "Polls-plus: #{hillary_polls_plus}%-#{donald_polls_plus}%"
-  end
-
   def hillary_polls_now
     forecast_for("now", "D")
   end
 
   def donald_polls_now
     forecast_for("now", "R")
-  end
-
-  def now_cast_string
-    "Now-cast: #{hillary_polls_now}%-#{donald_polls_now}%"
   end
 
   def forecast_for(model, party)
