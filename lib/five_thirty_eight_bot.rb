@@ -1,4 +1,3 @@
-require 'httparty'
 require 'twitter'
 require 'nokogiri'
 require 'json'

@@ -1,3 +1,5 @@
+require 'httparty'
+
 class SiteScrape
   def new
   end
