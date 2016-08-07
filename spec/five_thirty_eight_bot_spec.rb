@@ -147,4 +147,24 @@ END
       end
     end
   end
+
+  describe '#is_forecast?' do
+    let(:bot) { FiveThirtyEightBot.new }
+
+    context 'with the new delta-forecast format' do
+      let(:forecast) do
+        <<END
+Update! Clinton v Trump
+Polls-plus ↑ 2.3% (76.4%-24.6%)
+Polls-only ↑ 2.3% (81.9%-19.1%)
+Now-cast ↑ 2.3% (93.5%-6.5%)
+https://projects.fivethirtyeight.com/2016-election-forecast/
+END
+      end
+
+      it 'returns true' do
+        expect(bot.is_forecast?(forecast)).to eq(true)
+      end
+    end
+  end
 end

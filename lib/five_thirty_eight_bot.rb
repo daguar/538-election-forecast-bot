@@ -19,6 +19,12 @@ class FiveThirtyEightBot
     twitter_client.update(current_forecast) unless last_forecast_tweet_is_current?
   end
 
+  def is_forecast?(text)
+    text.include?("Polls-plus") and
+      text.include?("Polls-only") and
+      text.include?("Now-cast")
+  end
+
   private
 
   def last_forecast_tweet_is_current?
@@ -30,12 +36,6 @@ class FiveThirtyEightBot
     tweets.each do |tweet|
       return tweet.text if is_forecast?(tweet.text)
     end
-  end
-
-  def is_forecast?(text)
-    text.include?("Polls-plus:") and
-      text.include?("Polls-only:") and
-      text.include?("Now-cast:")
   end
 
   def current_forecast
