@@ -42,15 +42,15 @@ class FiveThirtyEightBot
   def forecast_update
     previous_forecast = Forecast.from_tweet(last_tweet_with_a_forecast)
 
-    plus_delta = format_delta(hillary_polls_plus - previous_forecast.hillary_polls_plus)
-    only_delta = format_delta(hillary_polls_only - previous_forecast.hillary_polls_only)
-    now_delta = format_delta(hillary_polls_now - previous_forecast.hillary_polls_now)
+    plus_delta = (hillary_polls_plus - previous_forecast.hillary_polls_plus).round(1)
+    only_delta = (hillary_polls_only - previous_forecast.hillary_polls_only).round(1)
+    now_delta = (hillary_polls_now - previous_forecast.hillary_polls_now).round(1)
 
     <<END
 Update! Clinton v Trump
-Polls-plus #{plus_delta}% (#{hillary_polls_plus}%-#{donald_polls_plus}%)
-Polls-only #{only_delta}% (#{hillary_polls_only}%-#{donald_polls_only}%)
-Now-cast #{now_delta}% (#{hillary_polls_now}%-#{donald_polls_now}%)
+Polls-plus #{format_delta(plus_delta)}% (#{hillary_polls_plus}%-#{donald_polls_plus}%)
+Polls-only #{format_delta(only_delta)}% (#{hillary_polls_only}%-#{donald_polls_only}%)
+Now-cast #{format_delta(now_delta)}% (#{hillary_polls_now}%-#{donald_polls_now}%)
 https://projects.fivethirtyeight.com/2016-election-forecast/
 END
   end

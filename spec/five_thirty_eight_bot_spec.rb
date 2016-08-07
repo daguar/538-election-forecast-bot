@@ -20,9 +20,9 @@ RSpec.describe FiveThirtyEightBot do
           double(Twitter::Tweet, text: <<END
 Forecast Model Update
 (Hillary vs. Donald)
-Polls-plus: 75.4%-24.6%
-Polls-only: 80.9%-19.1%
-Now-cast: 92.5%-7.5%
+Polls-plus: 75.5%-24.5%
+Polls-only: 79.9%-20.1%
+Now-cast: 90.5%-9.5%
 https://projects.fivethirtyeight.com/2016-election-forecast/
 END
                 )
@@ -36,9 +36,9 @@ END
       it 'tweets the update with a delta' do
         current_forecast_status = <<END
 Update! Clinton v Trump
-Polls-plus ↓ 1.0% (74.4%-25.6%)
-Polls-only ↓ 1.0% (79.9%-20.1%)
-Now-cast ↓ 1.0% (91.5%-8.5%)
+Polls-plus ↓ 1.1% (74.4%-25.6%)
+Polls-only 0.0% (79.9%-20.1%)
+Now-cast ↑ 1.0% (91.5%-8.5%)
 https://projects.fivethirtyeight.com/2016-election-forecast/
 END
         expect(fake_twitter).to have_received(:update).with(current_forecast_status)
