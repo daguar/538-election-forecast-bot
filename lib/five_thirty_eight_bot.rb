@@ -70,7 +70,7 @@ END
   end
 
   def donald_polls_only
-    forecast_for("polls", "R").to_s
+    forecast_for("polls", "R")
   end
 
   def polls_only_string
@@ -82,7 +82,7 @@ END
   end
 
   def donald_polls_plus
-    forecast_for("plus", "R").to_s
+    forecast_for("plus", "R")
   end
 
   def polls_plus_string
@@ -94,7 +94,7 @@ END
   end
 
   def donald_polls_now
-    forecast_for("now", "R").to_s
+    forecast_for("now", "R")
   end
 
   def now_cast_string
