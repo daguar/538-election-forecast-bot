@@ -1,5 +1,7 @@
 # 538 Tweet Bot
 
+[![Build Status](https://travis-ci.org/daguar/538-election-forecast-bot.svg?branch=master)](https://travis-ci.org/daguar/538-election-forecast-bot)
+
 A bot that tweets any time the [538 Election Model](https://projects.fivethirtyeight.com/2016-election-forecast/) is updated.
 
 The live bot lives at: [https://twitter.com/538forecastbot](https://twitter.com/538forecastbot)
