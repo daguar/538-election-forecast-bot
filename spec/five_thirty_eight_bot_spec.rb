@@ -35,7 +35,7 @@ END
 
       it 'tweets the update with a delta' do
         current_forecast_status = <<END
-Update! Clinton v Trump
+Update! Clinton-Trump
 Polls-plus ↓ 1.1% (74.4%-25.6%)
 Polls-only 0.0% (79.9%-20.1%)
 Now-cast ↑ 1.0% (91.5%-8.5%)

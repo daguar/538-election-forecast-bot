@@ -49,7 +49,7 @@ class FiveThirtyEightBot
     now_delta = (current.hillary_polls_now - previous.hillary_polls_now).round(1)
 
     <<END
-Update! Clinton v Trump
+Update! Clinton-Trump
 Polls-plus #{format_delta(plus_delta)}% (#{current.hillary_polls_plus}%-#{current.donald_polls_plus}%)
 Polls-only #{format_delta(only_delta)}% (#{current.hillary_polls_only}%-#{current.donald_polls_only}%)
 Now-cast #{format_delta(now_delta)}% (#{current.hillary_polls_now}%-#{current.donald_polls_now}%)
