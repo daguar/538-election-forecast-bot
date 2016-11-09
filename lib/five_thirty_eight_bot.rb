@@ -2,9 +2,10 @@ require 'twitter'
 require 'nokogiri'
 require 'json'
 require File.expand_path('../forecast', __FILE__)
+require File.expand_path('../livecast', __FILE__)
 
 class FiveThirtyEightBot
-  attr_reader :twitter_client, :latest_forecast
+  attr_reader :twitter_client, :latest_forecast, :latest_livecast
 
   def initialize
     @twitter_client = Twitter::REST::Client.new do |config|
@@ -13,6 +14,12 @@ class FiveThirtyEightBot
       config.access_token        = ENV["ACCESS_TOKEN"]
       config.access_token_secret = ENV["ACCESS_TOKEN_SECRET"]
     end
+  end
+
+  def tweet_if_new_livecast
+    @latest_livecast = Livecast.from_website
+
+    twitter_client.update(livecast_update) unless last_livecast_tweet_is_current?
   end
 
   def tweet_if_new_forecast
@@ -33,11 +40,40 @@ class FiveThirtyEightBot
     last_tweet_with_a_forecast.include?(latest_forecast.hillary_polls_only.to_s) and last_tweet_with_a_forecast.include?(latest_forecast.donald_polls_only.to_s) and last_tweet_with_a_forecast.include?(latest_forecast.hillary_polls_plus.to_s) and last_tweet_with_a_forecast.include?(latest_forecast.donald_polls_plus.to_s) and last_tweet_with_a_forecast.include?(latest_forecast.hillary_polls_now.to_s) and last_tweet_with_a_forecast.include?(latest_forecast.donald_polls_now.to_s)
   end
 
+  def last_livecast_tweet_is_current?
+    last_tweet_with_a_livecast.include?(latest_livecast.clinton_odds.to_s) and
+      last_tweet_with_a_livecast.include?(latest_livecast.clinton_ev.to_s) and
+      last_tweet_with_a_livecast.include?(latest_livecast.trump_odds.to_s) and
+      last_tweet_with_a_livecast.include?(latest_livecast.trump_ev.to_s)
+  end
+
   def last_tweet_with_a_forecast
     tweets = twitter_client.user_timeline
     tweets.each do |tweet|
       return tweet.text if is_forecast?(tweet.text)
     end
+  end
+
+  def last_tweet_with_a_livecast
+    tweets = twitter_client.user_timeline
+    tweets.each do |tweet|
+      return tweet.text if tweet.text.include?("Update! Live Election Night Forecast")
+    end
+  end
+
+  def livecast_update
+    previous = Livecast.from_tweet(last_tweet_with_a_livecast)
+    current = latest_livecast
+
+    clinton_delta = (current.clinton_odds - previous.clinton_odds).round(1)
+    trump_delta = (current.trump_odds - previous.trump_odds).round(1)
+
+    <<END
+Update! Live Election Night Forecast!!
+Clinton #{current.clinton_odds}% (#{format_delta(clinton_delta)}%), #{current.clinton_ev} EVs
+Trump #{current.trump_odds}% (#{format_delta(trump_delta)}%), #{current.trump_ev} EVs
+http://projects.fivethirtyeight.com/election-night-forecast-2016/
+END
   end
 
   def forecast_update

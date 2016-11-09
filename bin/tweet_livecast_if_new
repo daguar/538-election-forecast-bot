@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/five_thirty_eight_bot'
+
+puts "Update running: (#{Time.now})"
+FiveThirtyEightBot.new.tweet_if_new_livecast

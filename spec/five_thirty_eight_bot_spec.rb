@@ -1,10 +1,67 @@
 require 'five_thirty_eight_bot'
 
 RSpec.describe FiveThirtyEightBot do
-  describe '#tweet_if_new_forecast' do
-    let(:bot) { FiveThirtyEightBot.new }
-    let(:fake_twitter) { double(Twitter::REST::Client, user_timeline: timeline, update: true) }
+  let(:bot) { FiveThirtyEightBot.new }
+  let(:fake_twitter) { double(Twitter::REST::Client, user_timeline: timeline, update: true) }
 
+  describe '#tweet_if_new_livecast' do
+    before do
+      allow(HTTParty).to receive(:get).and_call_original
+      allow(Twitter::REST::Client).to receive(:new).and_return(fake_twitter)
+
+      VCR.use_cassette('fivethirtyeight_livecast') do
+        bot.tweet_if_new_livecast
+      end
+    end
+
+    context 'when the latest tweet is an outdated forecast' do
+      let(:timeline) do
+        [
+          double(Twitter::Tweet, text: <<END
+Update! Live Election Night Forecast!!
+Clinton 70.4% (0.0%), 302.2 EVs
+Trump 29.6% (0.0%), 235.0 EVs
+http://projects.fivethirtyeight.com/election-night-forecast-2016/
+END
+                )
+        ]
+      end
+
+      it 'downloads the 538 predictions page' do
+        expect(HTTParty).to have_received(:get).with('http://projects.fivethirtyeight.com/election-night-forecast-2016/events.json')
+      end
+
+      it 'tweets the update with a delta' do
+        current_forecast_status = <<END
+Update! Live Election Night Forecast!!
+Clinton 71.4% (↑ 1.0%), 302.2 EVs
+Trump 28.6% (↓ 1.0%), 235.0 EVs
+http://projects.fivethirtyeight.com/election-night-forecast-2016/
+END
+        expect(fake_twitter).to have_received(:update).with(current_forecast_status)
+      end
+    end
+
+    context 'when the latest tweet has the current forecast' do
+      let(:timeline) do
+        [
+          double(Twitter::Tweet, text: <<END
+Update! Live Election Night Forecast!!
+Clinton 71.4% (0.0%), 302.2 EVs
+Trump 28.6% (0.0%), 235.0 EVs
+http://projects.fivethirtyeight.com/election-night-forecast-2016/
+END
+                )
+        ]
+      end
+
+      it 'does not tweet' do
+        expect(fake_twitter).to_not have_received(:update)
+      end
+    end
+  end
+
+  describe '#tweet_if_new_forecast' do
     before do
       allow(HTTParty).to receive(:get).and_call_original
       allow(Twitter::REST::Client).to receive(:new).and_return(fake_twitter)
