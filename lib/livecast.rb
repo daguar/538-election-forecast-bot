@@ -4,7 +4,7 @@ class Livecast
   def self.from_website
     data = JSON.parse(HTTParty.get("http://projects.fivethirtyeight.com/election-night-forecast-2016/events.json").body)
     livecast_updates = data["president"]
-    latest_update_data = livecast_updates.sort { |u| Time.parse(u["time"]).to_i }.last
+    latest_update_data = livecast_updates.sort { |u| Time.parse(u["time"]).to_i }.first
     new(latest_update_data["states"]["US"]["D"].to_f.round(1), latest_update_data["evs"]["D"]["avg"].to_f.round(1), latest_update_data["states"]["US"]["R"].to_f.round(1), latest_update_data["evs"]["R"]["avg"].to_f.round(1))
   end
 
